@@ -40,7 +40,6 @@ namespace RestAPI_SaatmannTest2.Controllers
             var Ops = await new GetOpsByIDQuery(_context, id).Processing();
             if (Ops.Count() == 0)
             {
-                //return NotFound();
                 return Problem("Entity Ops does not return any result!");
             }
             return Ok(Ops);
