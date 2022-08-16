@@ -4,6 +4,10 @@ using RestAPI_SaatmannTest2.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Collections;
+using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
 
 namespace RestAPI_SaatmannTest2.Controllers
 {
@@ -18,24 +22,40 @@ namespace RestAPI_SaatmannTest2.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Ops> Get()
+        public async Task<ActionResult<IEnumerable<Ops>>> Get()
         {
-            return new GetAllOpsQuery(_context).Ops;
+            var Ops = await new GetAllOpsQuery(_context).Processing();
+            if (Ops.Count() == 0)
+            {
+                return NotFound();
+            }
+            return Ok(Ops);
         }
 
 
         [HttpGet("{id}")]
         //api/ops/3260423194
-        public IEnumerable<Ops> Get(string id)
+        public async Task<ActionResult<IEnumerable<Ops>>> Get(string id)
         {
-            return new GetOpsByIDQuery(_context, id).Ops;
+            var Ops = await new GetOpsByIDQuery(_context, id).Processing();
+            if (Ops.Count() == 0)
+            {
+                //return NotFound();
+                return Problem("Entity Ops does not return any result!");
+            }
+            return Ok(Ops);
         }
 
         [HttpGet("{startdate}/{enddate}")]
         //api/ops/2019-01-14/2019-01-15
-        public IEnumerable<Ops> Get(DateTime startdate, DateTime enddate)
+        public async Task<ActionResult<IEnumerable<Ops>>> Get(DateTime startdate, DateTime enddate)
         {
-            return new GetOpsByDateBetweenQuery(_context, startdate, enddate).Ops;
+            var Ops = await new GetOpsByDateBetweenQuery(_context, startdate, enddate).Processing();
+            if (Ops.Count() == 0)
+            {
+                return Problem("Entity Ops does not return any result!");
+            }
+            return Ok(Ops);
         }
       
     }

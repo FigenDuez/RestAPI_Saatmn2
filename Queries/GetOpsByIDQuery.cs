@@ -2,6 +2,7 @@
 using RestAPI_SaatmannTest2.Models;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RestAPI_SaatmannTest2.Queries
 {
@@ -9,19 +10,22 @@ namespace RestAPI_SaatmannTest2.Queries
     {
         private readonly ITAssessmentContext _context;
         private readonly string _id;
-        public List<Ops> Ops = new();
-
+        private List<Ops> Ops;
+       
         public GetOpsByIDQuery(ITAssessmentContext context, string id)
         {
             _context = context;
             _id = id;
-            Processing();
+            Ops = new();
         }
-        private void Processing()
+
+        public async Task<IEnumerable<Ops>> Processing()
         {
-           Ops = _context.Ops
+            await Task.Yield();
+            Ops = _context.Ops
                             .FromSqlRaw<Ops>("SELECT O.* FROM OPS O INNER JOIN Falls F ON O.KH_internes_Kennzeichen = F.KH_internes_Kennzeichen WHERE F.KH_internes_Kennzeichen = @searchTerm", new SqlParameter("@searchTerm", _id))
                            .ToList();
+            return Ops;
         }
     }
 }
