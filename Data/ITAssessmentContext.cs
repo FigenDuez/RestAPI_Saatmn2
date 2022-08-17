@@ -10,8 +10,7 @@ namespace RestAPI_SaatmannTest2.Data
     {
         public ITAssessmentContext()
         {
-            //SetDatabaseLogFormatter(
-            //(context, writeAction) => new OneLineFormatter(context, writeAction));
+            
         }
 
         public ITAssessmentContext(DbContextOptions<ITAssessmentContext> options)
@@ -20,7 +19,7 @@ namespace RestAPI_SaatmannTest2.Data
 
         }
 
-       
+
         public virtual DbSet<Entgelte> Entgeltes { get; set; } = null!;
         public virtual DbSet<Fab> Fabs { get; set; } = null!;
         public virtual DbSet<Fall> Falls { get; set; } = null!;
@@ -29,13 +28,13 @@ namespace RestAPI_SaatmannTest2.Data
 
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Entgelte>().ToTable("Entgeltes");
-            modelBuilder.Entity<Fab>().ToTable("Fabs");
-            modelBuilder.Entity<Fall>().ToTable("Falls");
-            modelBuilder.Entity<Icd>().ToTable("Icds");
-            modelBuilder.Entity<Ops>().ToTable("Ops");
-        }
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Entgelte>().ToTable("Entgeltes");
+        //    modelBuilder.Entity<Fab>().ToTable("Fabs");
+        //    modelBuilder.Entity<Fall>().ToTable("Falls");
+        //    modelBuilder.Entity<Icd>().ToTable("Icds");
+        //    modelBuilder.Entity<Ops>().ToTable("Ops");
+        //}
     }
 }
